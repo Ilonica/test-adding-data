@@ -163,7 +163,111 @@ def test_update_invalid_git_info():
     invalid_response_update = requests.put(f"{BASE_URL}{id}", json=updated_payload_invalid)
     assert invalid_response_update.status_code == 202
 
-# Деструктивный тест: Добавление очень диного гита в корректном формате
+# Отрицательный тест: Добавление телефона в некорректном формате
+def test_update_invalid_phone_n_info():
+    # Создание студента
+    payload = {
+        "version": "string",
+        "student": {
+            "personalData": {
+                "firstname": "Милана",
+                "lastname": "Агаева",
+                "patronymic": "Андреевна",
+                "lastnameInitials": "Агаева М.А."
+            }
+        }
+    }
+    response_create = requests.post(f'{BASE_URL}', json=payload)
+    assert response_create.status_code >= 200 and response_create.status_code <= 299
+    id = response_create.json()["info"][0]["id"]
+
+    updated_payload_invalid = {
+  "version": "string",
+  "student": {
+    "personalData": {
+      "firstname": "Милана",
+      "lastname": "Агаева",
+      "patronymic": "Андреевна",
+      "lastnameInitials": "Агаева М.А."
+    },
+    "fgit": {
+      "hasGit": False,
+    },
+    "fcontact": {
+      "hasContact": True,
+       "femail": {
+          "email": "agaeva@mail.ru",
+          "hasEmail": True
+       },
+       "ftelegram": {
+          "telegram": "@agaeva",
+          "hasTelegram": True
+       },
+       "fphone": {
+          "phone": "890955",
+          "hasPhone": True
+        }
+    }
+  }
+}
+    # Добавление телеграма
+    invalid_response_update = requests.put(f"{BASE_URL}{id}", json=updated_payload_invalid)
+    assert invalid_response_update.status_code == 202
+
+# Отрицательный тест: Добавление почты в некорректном формате
+def test_update_invalid_mail_info():
+    # Создание студента
+    payload = {
+        "version": "string",
+        "student": {
+            "personalData": {
+                "firstname": "Милана",
+                "lastname": "Агаева",
+                "patronymic": "Андреевна",
+                "lastnameInitials": "Агаева М.А."
+            }
+        }
+    }
+    response_create = requests.post(f'{BASE_URL}', json=payload)
+    assert response_create.status_code >= 200 and response_create.status_code <= 299
+    id = response_create.json()["info"][0]["id"]
+
+    updated_payload_invalid = {
+  "version": "string",
+  "student": {
+    "personalData": {
+      "firstname": "Милана",
+      "lastname": "Агаева",
+      "patronymic": "Андреевна",
+      "lastnameInitials": "Агаева М.А."
+    },
+    "fgit": {
+      "hasGit": False,
+    },
+    "fcontact": {
+      "hasContact": True,
+       "femail": {
+          "email": "agaeva",
+          "hasEmail": True
+       },
+       "ftelegram": {
+          "telegram": "@agaeva",
+          "hasTelegram": True
+       },
+       "fphone": {
+          "phone": "89095557788",
+          "hasPhone": True
+        }
+    }
+  }
+}
+    # Добавление телеграма
+    invalid_response_update = requests.put(f"{BASE_URL}{id}", json=updated_payload_invalid)
+    assert invalid_response_update.status_code == 202
+
+
+
+# Деструктивный тест: Добавление очень диного телеграма в корректном формате
 def test_update_long_git_info():
     # Создание студента
     payload = {
@@ -210,7 +314,7 @@ def test_update_long_git_info():
     }
   }
 }
-    # Добавление гита в некорректном формате
+    # Добавление телеграма
     invalid_response_update = requests.put(f"{BASE_URL}{id}", json=updated_payload_invalid)
     assert invalid_response_update.status_code == 500
 
